@@ -82,6 +82,19 @@ h1 {
     font-weight: 600;
 }
 
+/* Style untuk kolom nomor */
+#todo-table th:first-child,
+#todo-table td:first-child {
+    width: 50px;
+    text-align: center;
+}
+
+/* Style untuk tugas yang selesai (coret) */
+.task-done {
+    text-decoration: line-through;
+    color: #95a5a6;
+}
+
 .status {
     padding: 5px 10px;
     border-radius: 15px;
@@ -96,7 +109,7 @@ h1 {
 .status-selesai { background-color: #2ecc71; }
 
 /* Mengatur layout kolom aksi agar rapi */
-#todo-table td:last-child {
+.action-cell {
     display: flex;
     align-items: center;
     gap: 5px;
