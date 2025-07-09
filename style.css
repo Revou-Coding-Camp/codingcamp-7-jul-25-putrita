@@ -21,17 +21,10 @@ body {
     max-width: 700px;
 }
 
-.header-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 25px;
-}
-
 h1 {
     text-align: center;
     color: #2c3e50;
-    margin-bottom: 0;
+    margin-bottom: 25px;
 }
 
 #todo-form {
@@ -124,14 +117,3 @@ h1 {
 .change-status-btn:hover { background-color: #8e44ad; }
 .delete-btn { background-color: #e74c3c; }
 .delete-btn:hover { background-color: #c0392b; }
-
-/* Gaya khusus untuk tombol download */
-#download-btn {
-    background-color: #16a085; /* Warna hijau yang berbeda */
-    padding: 10px 15px;
-    font-size: 14px;
-}
-
-#download-btn:hover {
-    background-color: #117a65;
-}

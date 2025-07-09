@@ -9,7 +9,10 @@
 <body>
 
     <div class="container">
-        <h1>My To-Do List</h1>
+        <div class="header-container">
+            <h1>My To-Do List</h1>
+            <button id="download-btn" class="action-btn">Download Excel</button>
+        </div>
         <form id="todo-form">
             <input type="text" id="todo-input" placeholder="Apa yang akan kamu lakukan?" required>
             <input type="date" id="todo-date" required>
@@ -31,6 +34,8 @@
         </table>
     </div>
 
+    <!-- Library untuk membuat file Excel -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="js/script.js"></script>
 </body>
 </html>
