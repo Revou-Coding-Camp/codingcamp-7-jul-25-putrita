@@ -14,7 +14,8 @@
             <button id="download-btn" class="action-btn">Download Excel</button>
         </div>
         <form id="todo-form">
-            <input type="text" id="todo-input" placeholder="Apa yang akan kamu lakukan?" required>
+            <!-- Mengganti input dengan div contenteditable untuk rich text -->
+            <div id="todo-input" class="textarea-input" contenteditable="true" role="textbox" aria-multiline="true"></div>
             <input type="date" id="todo-date" required>
             <button type="submit">Tambah</button>
         </form>

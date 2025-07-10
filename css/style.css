@@ -40,15 +40,33 @@ h1 {
     margin-bottom: 25px;
 }
 
-#todo-form input[type="text"] {
-    flex-grow: 1;
-}
-
 #todo-form input {
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 5px;
     font-size: 16px;
+}
+
+/* Style untuk div contenteditable yang baru */
+.textarea-input {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    min-height: 22px; /* Menyesuaikan tinggi dengan input tanggal */
+    max-height: 150px;
+    overflow-y: auto;
+    background-color: white;
+    cursor: text;
+    line-height: 1.5;
+}
+
+/* Trik CSS untuk placeholder pada div contenteditable */
+.textarea-input:empty::before {
+    content: 'Apa yang akan kamu lakukan?';
+    color: #999;
+    pointer-events: none; /* Agar bisa diklik tembus */
 }
 
 #todo-form button {
@@ -95,6 +113,28 @@ h1 {
     color: #95a5a6;
 }
 
+/* Style untuk baris yang sedang diedit */
+tr.editing {
+    background-color: #f8f9fa;
+}
+
+/* Style untuk input di dalam mode edit tabel */
+.editing-textarea, .editing-input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #3498db;
+    border-radius: 4px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    box-sizing: border-box; /* Penting agar padding tidak menambah lebar */
+}
+
+.editing-textarea {
+    background-color: #fdfdfd;
+    min-height: 50px;
+    line-height: 1.5;
+}
+
 .status {
     padding: 5px 10px;
     border-radius: 15px;
@@ -133,10 +173,17 @@ h1 {
     font-size: 12px;
 }
 
-.change-status-btn { background-color: #9b59b6; }
-.change-status-btn:hover { background-color: #8e44ad; }
+.edit-btn { background-color: #3498db; }
+.edit-btn:hover { background-color: #2980b9; }
+
 .delete-btn { background-color: #e74c3c; }
 .delete-btn:hover { background-color: #c0392b; }
+
+.save-btn { background-color: #2ecc71; }
+.save-btn:hover { background-color: #27ae60; }
+
+.cancel-btn { background-color: #f39c12; }
+.cancel-btn:hover { background-color: #e67e22; }
 
 /* Gaya khusus untuk tombol download */
 #download-btn {

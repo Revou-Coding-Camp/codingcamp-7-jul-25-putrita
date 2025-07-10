@@ -64,10 +64,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td>${todo.date}</td>
                 <td><span class="status ${statusClass}">${todo.status}</span></td>
                 <td class="action-cell">
-                    <select class="status-select" data-id="${todo.createdAt}">
+                    <select class="status-select" data-id="${todo.createdAt}" title="Ubah Status">
                         ${statusOptions}
                     </select>
-                    <button class="action-btn delete-btn" data-id="${todo.createdAt}">Hapus</button>
+                    <button class="action-btn edit-btn" data-id="${todo.createdAt}" title="Edit Tugas">Edit</button>
+                    <button class="action-btn delete-btn" data-id="${todo.createdAt}" title="Hapus Tugas">Hapus</button>
                 </td>
                 <td>${formatDateTime(todo.updatedAt)}</td>
             `;
@@ -79,33 +80,86 @@ document.addEventListener('DOMContentLoaded', () => {
     todoForm.addEventListener('submit', (e) => {
         e.preventDefault(); // Mencegah reload halaman
 
+        const taskContent = todoInput.innerHTML.trim();
+
+        // Validasi manual karena div tidak punya atribut 'required'
+        if (taskContent === '') {
+            alert('Tugas tidak boleh kosong.');
+            return;
+        }
+
         const now = new Date().toISOString();
         const newTask = {
-            task: todoInput.value,
+            task: taskContent, // Mengambil dari innerHTML
             date: todoDate.value,
             status: 'Baru', // Status default
             createdAt: now,
             updatedAt: now
         };
 
-        todos.unshift(newTask); // Tambahkan ke paling atas array
+        todos.unshift(newTask);
         saveTodos();
         renderTodos();
 
         // Kosongkan input field
-        todoInput.value = '';
+        todoInput.innerHTML = ''; // Mengosongkan div
         todoDate.value = '';
     });
 
-    // Event listener untuk klik pada tombol Hapus
+    // Event listener untuk semua aksi di dalam list (delete, edit, save, cancel)
     todoList.addEventListener('click', (e) => {
         const target = e.target;
-        // Hanya jalankan jika yang diklik adalah tombol hapus
+        const id = target.dataset.id;
+
+        // Hapus Tugas
         if (target.classList.contains('delete-btn')) {
-            const id = target.dataset.id;
             const index = todos.findIndex(todo => todo.createdAt === id);
             if (index > -1) {
                 todos.splice(index, 1); // Hapus to-do dari array
+                saveTodos();
+                renderTodos();
+            }
+        }
+
+        // Edit Tugas
+        if (target.classList.contains('edit-btn')) {
+            const row = target.closest('tr');
+            const todo = todos.find(t => t.createdAt === id);
+            if (!todo) return;
+
+            row.classList.add('editing'); // Tandai baris sedang diedit
+
+            row.innerHTML = `
+                <td>${row.cells[0].innerHTML}</td>
+                <td><div class="editing-textarea" contenteditable="true">${todo.task}</div></td>
+                <td><input type="date" class="editing-input" value="${todo.date}"></td>
+                <td>${row.cells[3].innerHTML}</td>
+                <td class="action-cell">
+                    <button class="action-btn save-btn" data-id="${id}" title="Simpan Perubahan">Simpan</button>
+                    <button class="action-btn cancel-btn" data-id="${id}" title="Batal">Batal</button>
+                </td>
+                <td>${row.cells[5].innerHTML}</td>
+            `;
+            row.querySelector('.editing-textarea').focus();
+        }
+
+        // Simpan Perubahan
+        if (target.classList.contains('save-btn')) {
+            const index = todos.findIndex(t => t.createdAt === id);
+            if (index > -1) {
+                const row = target.closest('tr');
+                const newTask = row.querySelector('.editing-textarea').innerHTML.trim();
+                const newDate = row.querySelector('.editing-input').value;
+
+                if (newTask === '') {
+                    alert('Tugas tidak boleh kosong.');
+                    return;
+                }
+
+                todos[index].task = newTask;
+                todos[index].date = newDate;
+                todos[index].updatedAt = new Date().toISOString();
+                
                 saveTodos();
                 renderTodos();
             }
