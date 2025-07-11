@@ -4,12 +4,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const todoDate = document.getElementById('todo-date');
     const todoList = document.getElementById('todo-list');
     const downloadBtn = document.getElementById('download-btn');
+    const statusFilter = document.getElementById('status-filter');
 
     // Status yang bisa dipilih
     const statuses = ['Baru', 'Pending', 'Selesai'];
 
     // Muat data dari localStorage atau gunakan array kosong
     let todos = JSON.parse(localStorage.getItem('todos')) || [];
+    // State untuk filter
+    let currentFilter = 'Semua';
 
     // Fungsi untuk menyimpan data ke localStorage
     const saveTodos = () => {
@@ -25,16 +28,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const renderTodos = () => {
         todoList.innerHTML = ''; // Kosongkan list sebelum render ulang
 
-        if (todos.length === 0) {
-            todoList.innerHTML = '<tr><td colspan="6" style="text-align:center;">Belum ada tugas.</td></tr>';
+        // 1. Filter todos berdasarkan currentFilter
+        const filteredTodos = todos.filter(todo => {
+            if (currentFilter === 'Semua') {
+                return true;
+            }
+            return todo.status === currentFilter;
+        });
+
+        if (filteredTodos.length === 0) {
+            const message = currentFilter === 'Semua' ? 'Belum ada tugas.' : 'Tidak ada tugas yang cocok dengan filter.';
+            todoList.innerHTML = `<tr><td colspan="6" style="text-align:center;">${message}</td></tr>`;
             return;
         }
 
         // Definisikan urutan status
         const statusOrder = { 'Baru': 0, 'Pending': 1, 'Selesai': 2 };
 
-        // Buat salinan array dan urutkan
-        const sortedTodos = [...todos].sort((a, b) => {
+        // 2. Urutkan array yang sudah difilter
+        const sortedTodos = [...filteredTodos].sort((a, b) => {
             const orderA = statusOrder[a.status];
             const orderB = statusOrder[b.status];
 
@@ -47,6 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return new Date(b.createdAt) - new Date(a.createdAt);
         });
 
+        // 3. Render array yang sudah difilter dan diurutkan
         sortedTodos.forEach((todo, index) => {
             const tr = document.createElement('tr');
 
@@ -182,16 +195,27 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Event listener untuk filter status
+    statusFilter.addEventListener('change', (e) => {
+        currentFilter = e.target.value;
+        renderTodos();
+    });
+
     // Event listener untuk tombol download Excel
     downloadBtn.addEventListener('click', () => {
-        if (todos.length === 0) {
+        const filteredTodos = todos.filter(todo => {
+            if (currentFilter === 'Semua') return true;
+            return todo.status === currentFilter;
+        });
+
+        if (filteredTodos.length === 0) {
             alert('Tidak ada data untuk diunduh.');
             return;
         }
 
         // Urutkan data sama seperti yang ditampilkan di tabel
         const statusOrder = { 'Baru': 0, 'Pending': 1, 'Selesai': 2 };
-        const sortedTodos = [...todos].sort((a, b) => {
+        const sortedTodos = [...filteredTodos].sort((a, b) => {
             const orderA = statusOrder[a.status];
             const orderB = statusOrder[b.status];
             if (orderA !== orderB) {

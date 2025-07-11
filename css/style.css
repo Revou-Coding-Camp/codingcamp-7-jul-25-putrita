@@ -103,6 +103,26 @@ h1 {
     pointer-events: none; /* Agar bisa diklik tembus */
 }
 
+.filter-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.filter-container label {
+    font-weight: 500;
+}
+
+#status-filter {
+    padding: 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    font-family: 'Poppins', sans-serif;
+}
+
 #todo-form button {
     padding: 10px 20px;
     border: none;
