@@ -1,9 +1,41 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
 
+:root {
+    /* Variabel Warna untuk Light Theme (Default) */
+    --bg-color: #f4f7f6;
+    --text-color: #333;
+    --container-bg: #fff;
+    --container-shadow: rgba(0, 0, 0, 0.1);
+    --header-color: #2c3e50;
+    --border-color: #ddd;
+    --table-header-bg: #f9f9f9;
+    --row-editing-bg: #f8f9fa;
+    --row-selected-bg: #eaf2f8;
+    --input-bg: #fff;
+    --placeholder-color: #999;
+    --task-done-color: #95a5a6;
+}
+
+body[data-theme="dark"] {
+    /* Variabel Warna untuk Dark Theme */
+    --bg-color: #121212;
+    --text-color: #e0e0e0;
+    --container-bg: #1e1e1e;
+    --container-shadow: rgba(0, 0, 0, 0.4);
+    --header-color: #ffffff;
+    --border-color: #444;
+    --table-header-bg: #2c2c2c;
+    --row-editing-bg: #2a2a2a;
+    --row-selected-bg: #3a3a3a;
+    --input-bg: #2c2c2c;
+    --placeholder-color: #777;
+    --task-done-color: #777;
+}
+
 body {
     font-family: 'Poppins', sans-serif;
-    background-color: #f4f7f6;
-    color: #333;
+    background-color: var(--bg-color);
+    color: var(--text-color);
     display: flex;
     justify-content: center;
     align-items: flex-start;
@@ -13,10 +45,10 @@ body {
 }
 
 .container {
-    background-color: #fff;
+    background-color: var(--container-bg);
     padding: 30px;
     border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 15px var(--container-shadow);
     width: 100%;
     max-width: 700px;
 }
@@ -30,7 +62,7 @@ body {
 
 h1 {
     text-align: center;
-    color: #2c3e50;
+    color: var(--header-color);
     margin-bottom: 0;
 }
 
@@ -42,8 +74,10 @@ h1 {
 
 #todo-form input {
     padding: 10px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--border-color);
     border-radius: 5px;
+    background-color: var(--input-bg);
+    color: var(--text-color);
     font-size: 16px;
 }
 
@@ -51,13 +85,13 @@ h1 {
 .textarea-input {
     flex-grow: 1;
     padding: 10px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--border-color);
     border-radius: 5px;
     font-size: 16px;
     min-height: 22px; /* Menyesuaikan tinggi dengan input tanggal */
     max-height: 150px;
     overflow-y: auto;
-    background-color: white;
+    background-color: var(--input-bg);
     cursor: text;
     line-height: 1.5;
 }
@@ -65,7 +99,7 @@ h1 {
 /* Trik CSS untuk placeholder pada div contenteditable */
 .textarea-input:empty::before {
     content: 'Apa yang akan kamu lakukan?';
-    color: #999;
+    color: var(--placeholder-color);
     pointer-events: none; /* Agar bisa diklik tembus */
 }
 
@@ -91,12 +125,12 @@ h1 {
 
 #todo-table th, #todo-table td {
     padding: 12px 15px;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--border-color);
     text-align: left;
 }
 
 #todo-table th {
-    background-color: #f9f9f9;
+    background-color: var(--table-header-bg);
     font-weight: 600;
 }
 
@@ -110,22 +144,29 @@ h1 {
 /* Style untuk tugas yang selesai (coret) */
 .task-done {
     text-decoration: line-through;
-    color: #95a5a6;
+    color: var(--task-done-color);
 }
 
 /* Style untuk baris yang sedang diedit */
 tr.editing {
-    background-color: #f8f9fa;
+    background-color: var(--row-editing-bg);
+}
+
+/* Style untuk baris yang dipilih */
+tr.selected {
+    background-color: var(--row-selected-bg);
 }
 
 /* Style untuk input di dalam mode edit tabel */
 .editing-textarea, .editing-input {
     width: 100%;
     padding: 8px;
-    border: 1px solid #3498db;
+    border: 1px solid var(--border-color);
     border-radius: 4px;
     font-family: 'Poppins', sans-serif;
     font-size: 14px;
+    background-color: var(--input-bg);
+    color: var(--text-color);
     box-sizing: border-box; /* Penting agar padding tidak menambah lebar */
 }
 
@@ -157,7 +198,9 @@ tr.editing {
 
 .status-select {
     padding: 5px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--border-color);
+    background-color: var(--input-bg);
+    color: var(--text-color);
     border-radius: 5px;
     font-family: 'Poppins', sans-serif;
     font-size: 12px;
@@ -194,4 +237,68 @@ tr.editing {
 
 #download-btn:hover {
     background-color: #117a65;
+}
+
+/* --- Media Queries untuk Tampilan Responsif --- */
+@media (max-width: 768px) {
+    body {
+        padding-top: 20px;
+    }
+
+    .container {
+        padding: 15px;
+    }
+
+    .header-container {
+        flex-direction: column;
+        gap: 15px;
+        align-items: stretch;
+        text-align: center;
+    }
+
+    #todo-form {
+        flex-direction: column;
+    }
+
+    /* Mengubah tabel menjadi layout kartu */
+    #todo-table {
+        border: none;
+    }
+
+    #todo-table thead {
+        display: none; /* Sembunyikan header tabel */
+    }
+
+    #todo-table tr {
+        display: block;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        margin-bottom: 15px;
+        box-shadow: 0 2px 4px var(--container-shadow);
+    }
+
+    #todo-table td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 15px;
+        text-align: right;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    #todo-table td:last-child {
+        border-bottom: none;
+    }
+
+    /* Menampilkan label dari atribut data-label */
+    #todo-table td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        text-align: left;
+        padding-right: 10px;
+    }
+
+    .action-cell {
+        flex-wrap: wrap; /* Agar tombol bisa turun jika tidak muat */
+    }
 }

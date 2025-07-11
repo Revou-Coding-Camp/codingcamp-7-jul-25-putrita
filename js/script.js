@@ -59,18 +59,18 @@ document.addEventListener('DOMContentLoaded', () => {
             ).join('');
 
             tr.innerHTML = `
-                <td>${index + 1}</td>
-                <td class="${taskTextClass}">${todo.task}</td>
-                <td>${todo.date}</td>
-                <td><span class="status ${statusClass}">${todo.status}</span></td>
-                <td class="action-cell">
+                <td data-label="No.">${index + 1}</td>
+                <td data-label="Tugas" class="${taskTextClass}">${todo.task}</td>
+                <td data-label="Tanggal">${todo.date}</td>
+                <td data-label="Status"><span class="status ${statusClass}">${todo.status}</span></td>
+                <td data-label="Aksi" class="action-cell">
                     <select class="status-select" data-id="${todo.createdAt}" title="Ubah Status">
                         ${statusOptions}
                     </select>
                     <button class="action-btn edit-btn" data-id="${todo.createdAt}" title="Edit Tugas">Edit</button>
                     <button class="action-btn delete-btn" data-id="${todo.createdAt}" title="Hapus Tugas">Hapus</button>
                 </td>
-                <td>${formatDateTime(todo.updatedAt)}</td>
+                <td data-label="Update">${formatDateTime(todo.updatedAt)}</td>
             `;
             todoList.appendChild(tr);
         });
@@ -130,15 +130,15 @@ document.addEventListener('DOMContentLoaded', () => {
             row.classList.add('editing'); // Tandai baris sedang diedit
 
             row.innerHTML = `
-                <td>${row.cells[0].innerHTML}</td>
-                <td><div class="editing-textarea" contenteditable="true">${todo.task}</div></td>
-                <td><input type="date" class="editing-input" value="${todo.date}"></td>
-                <td>${row.cells[3].innerHTML}</td>
-                <td class="action-cell">
+                <td data-label="No.">${row.cells[0].innerHTML}</td>
+                <td data-label="Tugas"><div class="editing-textarea" contenteditable="true">${todo.task}</div></td>
+                <td data-label="Tanggal"><input type="date" class="editing-input" value="${todo.date}"></td>
+                <td data-label="Status">${row.cells[3].innerHTML}</td>
+                <td data-label="Aksi" class="action-cell">
                     <button class="action-btn save-btn" data-id="${id}" title="Simpan Perubahan">Simpan</button>
                     <button class="action-btn cancel-btn" data-id="${id}" title="Batal">Batal</button>
                 </td>
-                <td>${row.cells[5].innerHTML}</td>
+                <td data-label="Update">${row.cells[5].innerHTML}</td>
             `;
             row.querySelector('.editing-textarea').focus();
         }
